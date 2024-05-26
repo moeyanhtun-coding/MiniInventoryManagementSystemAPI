@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.34909.67
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MYTConsoleApp.MiniInventoryManagementSystem", "MYTConsoleApp.MiniInventoryManagementSystem\MYTConsoleApp.MiniInventoryManagementSystem.csproj", "{2DDFDBBD-0639-4456-958F-08D91CF110C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MiniInventoryManagementSystem.WebApi", "MiniInventoryManagementSystem.WebApi\MiniInventoryManagementSystem.WebApi.csproj", "{DB0E7957-4725-48E9-B6A3-BC01BAF2C24E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2DDFDBBD-0639-4456-958F-08D91CF110C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DDFDBBD-0639-4456-958F-08D91CF110C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DDFDBBD-0639-4456-958F-08D91CF110C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DDFDBBD-0639-4456-958F-08D91CF110C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB0E7957-4725-48E9-B6A3-BC01BAF2C24E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB0E7957-4725-48E9-B6A3-BC01BAF2C24E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB0E7957-4725-48E9-B6A3-BC01BAF2C24E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB0E7957-4725-48E9-B6A3-BC01BAF2C24E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {304E6F35-465F-4348-9633-7C57CD718656}
+	EndGlobalSection
+EndGlobal
