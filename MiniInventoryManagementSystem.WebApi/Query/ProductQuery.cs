@@ -11,5 +11,13 @@
            (@ProductName
            ,@ProductQuantity
            ,@ProductPrice)";
+
+        public static string productGet { get; } =
+            @"SELECT [ProductId]
+      ,[ProductName]
+      ,[ProductQuantity]
+      ,[ProductPrice]
+      FROM [dbo].[Tbl_Product]
+      WHERE ProductId = @ProductId";
     }
 }
