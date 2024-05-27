@@ -60,7 +60,6 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
                 return NotFound("No Data Found");
             }
             string conditions = string.Empty;
-    
 
             ProductModel item = new ProductModel();
             if (!string.IsNullOrEmpty(product.ProductName))
@@ -81,7 +80,7 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
             conditions = conditions.Substring(0, conditions.Length - 2);
             item.ProductId = id;
             string query =
-        $@"UPDATE [dbo].[Tbl_Product]
+                $@"UPDATE [dbo].[Tbl_Product]
                    SET {conditions}
                  WHERE ProductId = @ProductId";
 
@@ -90,6 +89,34 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
             return Ok(message);
         }
 
+        //product Delete
+        [HttpDelete("{id}")]
+        public IActionResult ProductDelete(int id)
+        {
+            ProductModel item = _db.QueryFirstOrDefault<ProductModel>(
+                ProductQuery.productGet,
+                new ProductModel { ProductId = id }
+            );
+            if (item is null)
+                return NotFound("Data Not Found");
+            int result = _db.Execute(ProductQuery.productDelete, item);
+            string message = result > 0 ? "Product Delete Success" : "Product Delete Fail";
+            return Ok(message);
+        }
 
+        [HttpGet("getProductItemsFiltered/{productName}")]
+        public IActionResult ProductSearch(string productName)
+        {
+            string query =
+                $@"SELECT * FROM [dbo].[Tbl_Product]
+                WHERE ProductName LIKE @ProductName";
+            List<ProductModel> lst = _db.Query<ProductModel>(
+                query,
+                new ProductModel { ProductName = $"%{productName}%" }
+            );
+            if (lst.Count == 0)
+                return NotFound("No Data Found");
+            return Ok(lst);
+        }
     }
 }
