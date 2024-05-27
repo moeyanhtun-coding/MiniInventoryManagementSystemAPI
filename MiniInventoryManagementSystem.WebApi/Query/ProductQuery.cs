@@ -2,6 +2,7 @@
 {
     public class ProductQuery
     {
+        public static string productList { get; } = @"SELECT * FROM [dbo].[Tbl_Product]";
         public static string productCreate { get; } =
             @"INSERT INTO [dbo].[Tbl_Product]
            ([ProductName]

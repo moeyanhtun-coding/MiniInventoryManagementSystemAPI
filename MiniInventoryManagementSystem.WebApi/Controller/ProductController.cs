@@ -17,6 +17,14 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
             ConnectionStrings.sqlConnectionStringBuilder.ConnectionString
         );
 
+        //product list
+        [HttpGet]
+        public IActionResult ProductList()
+        {
+            List<ProductModel> lst = _db.Query<ProductModel>(ProductQuery.productList);
+            return Ok(lst);
+        }
+
         //product create
         [HttpPost]
         public IActionResult ProductCreate(ProductModel product)
@@ -40,6 +48,48 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
         }
 
         //product Update
-        [HttpPatch]
+        [HttpPatch("{id}")]
+        public IActionResult ProductUpdate(int id, ProductModel product)
+        {
+            var itemFind = _db.QueryFirstOrDefault<ProductModel>(
+                ProductQuery.productGet,
+                new ProductModel { ProductId = id }
+            );
+            if (itemFind is null)
+            {
+                return NotFound("No Data Found");
+            }
+            string conditions = string.Empty;
+    
+
+            ProductModel item = new ProductModel();
+            if (!string.IsNullOrEmpty(product.ProductName))
+            {
+                item.ProductName = product.ProductName;
+                conditions += " [ProductName] = @ProductName, ";
+            }
+            if (product.ProductQuantity.HasValue)
+            {
+                item.ProductQuantity = product.ProductQuantity;
+                conditions += " [ProductQuantity] = @ProductQuantity, ";
+            }
+            if (product.ProductPrice.HasValue)
+            {
+                item.ProductPrice = product.ProductPrice;
+                conditions += " [ProductPrice] = @ProductPrice, ";
+            }
+            conditions = conditions.Substring(0, conditions.Length - 2);
+            item.ProductId = id;
+            string query =
+        $@"UPDATE [dbo].[Tbl_Product]
+                   SET {conditions}
+                 WHERE ProductId = @ProductId";
+
+            int result = _db.Execute(query, item);
+            string message = result > 0 ? "Product Update Success" : "Product Update Fail";
+            return Ok(message);
+        }
+
+
     }
 }

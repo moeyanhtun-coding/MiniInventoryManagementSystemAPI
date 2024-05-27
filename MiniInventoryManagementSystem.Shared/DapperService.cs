@@ -20,6 +20,13 @@ namespace MiniInventoryManagementSystem.Shared
             return item;
         }
 
+        public List<T> Query<T>(string query)
+        {
+            using IDbConnection db = new SqlConnection(_connectionString);
+            var lst = db.Query<T>(query).ToList();
+            return lst;
+        }
+
         public int Execute(string query, object? param = null)
         {
             using IDbConnection db = new SqlConnection(_connectionString);
