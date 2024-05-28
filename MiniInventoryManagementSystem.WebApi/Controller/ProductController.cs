@@ -13,7 +13,7 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
     [ApiController]
     public class ProductController : ControllerBase
     {
-        private readonly DapperService _db = new DapperService(
+        private readonly DapperService _dapperService = new DapperService(
             ConnectionStrings.sqlConnectionStringBuilder.ConnectionString
         );
 
@@ -21,7 +21,7 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
         [HttpGet]
         public IActionResult ProductList()
         {
-            List<ProductModel> lst = _db.Query<ProductModel>(ProductQuery.productList);
+            List<ProductModel> lst = _dapperService.Query<ProductModel>(ProductQuery.ProductList);
             return Ok(lst);
         }
 
@@ -29,7 +29,7 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
         [HttpPost]
         public IActionResult ProductCreate(ProductModel product)
         {
-            int result = _db.Execute(ProductQuery.productCreate, product);
+            int result = _dapperService.Execute(ProductQuery.ProductCreate, product);
             var message = result > 0 ? "Product Create Success" : "Product Create Fail";
             return Ok(message);
         }
@@ -38,8 +38,8 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
         [HttpGet("{id}")]
         public IActionResult ProductGet(int id)
         {
-            ProductModel item = _db.QueryFirstOrDefault<ProductModel>(
-                ProductQuery.productGet,
+            ProductModel item = _dapperService.QueryFirstOrDefault<ProductModel>(
+                ProductQuery.ProductGet,
                 new ProductModel { ProductId = id }
             );
             if (item is null)
@@ -51,8 +51,8 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
         [HttpPatch("{id}")]
         public IActionResult ProductUpdate(int id, ProductModel product)
         {
-            var itemFind = _db.QueryFirstOrDefault<ProductModel>(
-                ProductQuery.productGet,
+            var itemFind = _dapperService.QueryFirstOrDefault<ProductModel>(
+                ProductQuery.ProductGet,
                 new ProductModel { ProductId = id }
             );
             if (itemFind is null)
@@ -62,6 +62,7 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
             string conditions = string.Empty;
 
             ProductModel item = new ProductModel();
+
             if (!string.IsNullOrEmpty(product.ProductName))
             {
                 item.ProductName = product.ProductName;
@@ -77,15 +78,20 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
                 item.ProductPrice = product.ProductPrice;
                 conditions += " [ProductPrice] = @ProductPrice, ";
             }
+
             conditions = conditions.Substring(0, conditions.Length - 2);
+
             item.ProductId = id;
+
             string query =
                 $@"UPDATE [dbo].[Tbl_Product]
                    SET {conditions}
                  WHERE ProductId = @ProductId";
 
-            int result = _db.Execute(query, item);
+            int result = _dapperService.Execute(query, item);
+
             string message = result > 0 ? "Product Update Success" : "Product Update Fail";
+
             return Ok(message);
         }
 
@@ -93,25 +99,23 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
         [HttpDelete("{id}")]
         public IActionResult ProductDelete(int id)
         {
-            ProductModel item = _db.QueryFirstOrDefault<ProductModel>(
-                ProductQuery.productGet,
+            ProductModel item = _dapperService.QueryFirstOrDefault<ProductModel>(
+                ProductQuery.ProductGet,
                 new ProductModel { ProductId = id }
             );
             if (item is null)
                 return NotFound("Data Not Found");
-            int result = _db.Execute(ProductQuery.productDelete, item);
+            int result = _dapperService.Execute(ProductQuery.ProductDelete, item);
             string message = result > 0 ? "Product Delete Success" : "Product Delete Fail";
             return Ok(message);
         }
 
+        //product search
         [HttpGet("getProductItemsFiltered/{productName}")]
         public IActionResult ProductSearch(string productName)
         {
-            string query =
-                $@"SELECT * FROM [dbo].[Tbl_Product]
-                WHERE ProductName LIKE @ProductName";
-            List<ProductModel> lst = _db.Query<ProductModel>(
-                query,
+            List<ProductModel> lst = _dapperService.Query<ProductModel>(
+                ProductQuery.ProductSearch,
                 new ProductModel { ProductName = $"%{productName}%" }
             );
             if (lst.Count == 0)
