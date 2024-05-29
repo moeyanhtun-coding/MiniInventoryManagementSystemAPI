@@ -18,7 +18,7 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
         );
 
         //product list
-        [HttpGet]
+        [HttpGet("ProductList")]
         public IActionResult ProductList()
         {
             List<ProductModel> lst = _dapperService.Query<ProductModel>(ProductQuery.ProductList);
@@ -26,7 +26,7 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
         }
 
         //product create
-        [HttpPost]
+        [HttpPost("ProductCreate")]
         public IActionResult ProductCreate(ProductModel product)
         {
             int result = _dapperService.Execute(ProductQuery.ProductCreate, product);
@@ -35,7 +35,7 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
         }
 
         //product Edit
-        [HttpGet("{id}")]
+        [HttpGet("ProductEdit/{id}")]
         public IActionResult ProductGet(int id)
         {
             ProductModel item = _dapperService.QueryFirstOrDefault<ProductModel>(
@@ -48,7 +48,7 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
         }
 
         //product Update
-        [HttpPatch("{id}")]
+        [HttpPatch("ProductUpdate/{id}")]
         public IActionResult ProductUpdate(int id, ProductModel product)
         {
             var itemFind = _dapperService.QueryFirstOrDefault<ProductModel>(
@@ -96,7 +96,7 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
         }
 
         //product Delete
-        [HttpDelete("{id}")]
+        [HttpDelete("ProductDelete/{id}")]
         public IActionResult ProductDelete(int id)
         {
             ProductModel item = _dapperService.QueryFirstOrDefault<ProductModel>(

@@ -18,7 +18,7 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
         );
 
         //order Create
-        [HttpPost]
+        [HttpPost("OrderCreate")]
         public IActionResult OrderCreate(OrderRequest orderRequest)
         {
             var product = _appDbContext.Products.FirstOrDefault(x =>
@@ -73,7 +73,7 @@ namespace MiniInventoryManagementSystem.WebApi.Controller
             return Ok(orderResponse);
         }
 
-        [HttpGet("{invoiceNo}")]
+        [HttpGet("OrderDetail/{invoiceNo}")]
         public IActionResult GetOrder(string invoiceNo)
         {
             var model = _dapperService
